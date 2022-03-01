@@ -18,7 +18,8 @@
     "react-native-root-siblings": "^4.1.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
-    "react-native-toast-message": "^2.1.1"
+    "react-native-toast-message": "^2.1.1",
+    "react-native-video": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
