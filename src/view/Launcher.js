@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Image, Dimensions,Text} from 'react-native';
 const {width, height} = Dimensions.get('window');
-const Launcher = () => {
+const Launcher = ({route, navigation}) => {
+
   return (
     <View>
         <Text>1122</Text>

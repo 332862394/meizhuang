@@ -17,42 +17,33 @@
  } from 'react-native';
  import Launcher from './src/view/Launcher';
  import RootView from './src/view/RootView';
-
+// import BaseView from './src/view/BaseView'
  import {
    Colors,
    Header,
   
  } from 'react-native/Libraries/NewAppScreen';
  import Orientation from 'react-native-orientation';
- 
+ import Toast from 'react-native-toast-message';
+ import { NavigationContainer } from '@react-navigation/native';
+ import { createNativeStackNavigator } from '@react-navigation/native-stack';
+ const Stack = createNativeStackNavigator();
 
  const App= ()  => {
    Orientation.lockToLandscape();
-   const [isShowLauncher, setIsShowLauncher] = useState(false);
-   useEffect(() => {
-    
-     setTimeout(() => {
-       setIsShowLauncher(t => false);
-     }, 5000);
-   }, []);
-   const isDarkMode = useColorScheme() === 'dark';
- 
   
+
  
    return (
-     <SafeAreaView >
-       <ScrollView
-         contentInsetAdjustmentBehavior="automatic"
-        >
-         <View
-           style={{
-             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-           }}>
-       <RootView />
-           
-         </View>
-       </ScrollView>
-     </SafeAreaView>
+    <NavigationContainer>
+    <Stack.Navigator screenOptions={{
+              headerShown: false,
+            }}>
+                    <Stack.Screen name="Launcher" component={Launcher} />
+
+      <Stack.Screen name="RootView" component={RootView} />
+    </Stack.Navigator>
+  </NavigationContainer>
    );
  };
  
