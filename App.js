@@ -15,8 +15,8 @@
    useColorScheme,
    View,
  } from 'react-native';
- import Launcher from './Launcher';
- import RootView from './RootView';
+ import Launcher from './src/view/Launcher';
+ import RootView from './src/view/RootView';
 
  import {
    Colors,
@@ -48,7 +48,7 @@
            style={{
              backgroundColor: isDarkMode ? Colors.black : Colors.white,
            }}>
-       <Launcher />
+       <RootView />
            
          </View>
        </ScrollView>
