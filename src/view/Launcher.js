@@ -5,7 +5,7 @@ const Launcher = ({route, navigation}) => {
 
   return (
     <View>
-        <Text>1122</Text>
+        <Text>112</Text>
     
     </View>
   );
