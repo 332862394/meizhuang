@@ -39,9 +39,9 @@
     <Stack.Navigator screenOptions={{
               headerShown: false,
             }}>
+    <Stack.Screen name="RootView" component={RootView} />
 
     <Stack.Screen name="Launcher" component={Launcher} />
-    <Stack.Screen name="RootView" component={RootView} />
 
     </Stack.Navigator>
   </NavigationContainer>

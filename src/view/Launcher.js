@@ -17,7 +17,7 @@ const Launcher = ({navigation, route}) => {
 
   return (
     <View style={styles.bigView}>
-       <Video  source={{uri: url}}   // Can be a URL or a local file.
+       <Video  source={require('../res/big_buck_bunny.mp4')}   // Can be a URL or a local file.
        ref={(ref) => {
          this.player = ref
        }} 
