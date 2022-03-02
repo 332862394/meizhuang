@@ -199,7 +199,6 @@ const RootView = () => {
       <TouchableOpacity
         style={styles.itemView}
         onPress={ () => {
-          console.log('item1:', item);
           leftClick(item)
         }}>
         <Image
@@ -224,7 +223,6 @@ const RootView = () => {
       <TouchableOpacity
         style={styles.itemView2}
         onPress={async () => {
-          console.log('item0:', item);
           topClick(item)
         }}>
         <Image source={require('../res/left_bkg.png')} style={styles.backImg} />
