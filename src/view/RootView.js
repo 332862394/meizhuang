@@ -1,23 +1,71 @@
-import React,{useState,useRef} from 'react';
-import {View, Image, Dimensions,Text,StyleSheet,ActivityIndicator,TouchableOpacity} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {
+  View,
+  Image,
+  Dimensions,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  SafeAreaView,
+  FlatList
+} from 'react-native';
 import Video from 'react-native-video';
 import Slider from '@react-native-community/slider';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import billUnit from '../api/billUnit';
 
-import VideoPlayer from '../components/VideoPlayer';
-const {width,height} = Dimensions.get('window');
-console.log("width:",width),
-console.log("height:",height)
+const {width, height} = Dimensions.get('window');
+console.log('width:', width), console.log('height:', height);
 
 const bl = width / 1194;
-const url = 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4'
-
-
+const url = 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4';
 
 const RootView = () => {
-  const player = useRef(null);
 
+  React.useEffect(() => {
+    // getData();
+   
+  }, []);
+
+
+  const player = useRef(null);
+  const [datalist, setDatalist] = useState([{
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
+    title: '最多五个字哈哈',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
+    title: 'Second Item2',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
+    title: 'Second Item3',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f634',
+    title: 'Second Item4',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f635',
+    title: 'Second Item5',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f636',
+    title: 'Second Item6',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f637',
+    title: 'Second Item7',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f638',
+    title: 'Second Item8',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d729',
+    title: 'Third Item9',
+  },]);
 
   const [videoOk, setVideoOk] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -26,6 +74,12 @@ const RootView = () => {
   const [videoTotal, setVideoTotal] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
+  const getData=async()=>{
+    const res = await billUnit.getBanner(2);
+    if (res) {
+      setDatalist(t => res);
+    }
+  }
   const onLoadStart = () => {
     console.log('onLoadStart');
   };
@@ -40,7 +94,7 @@ const RootView = () => {
     let duration = data.seekableDuration;
     setVideoTotal(t => (t = duration));
     setCurrentTime(t => (t = Number(data.currentTime.toFixed(2))));
-    setSliderValue(t=>(t = Number(data.currentTime.toFixed(2))))
+    setSliderValue(t => (t = Number(data.currentTime.toFixed(2))));
     if (!videoLoaded) {
       setVideoLoaded(t => true);
     }
@@ -51,47 +105,77 @@ const RootView = () => {
   };
   const onEnd = () => {
     console.log('onEnd');
-    setPlaying(t=>t=false)
+    setPlaying(t => (t = false));
+    setPaused(t =>t= true);
+    player.current.seek(0);
+    setCurrentTime(t => (t = 0));
+    setSliderValue(t => (t = 0));
   };
-  const onError=()=>{
-    console.log("onError")
-    setVideoOk(t=>t=false)
-  }
-  const changePausedState=()=>{
-   
-    setPaused(t=>!t)
-   console.log("p")
- 
-  }
-  const formatMediaTime=(time)=> {
+  const onError = () => {
+    console.log('onError');
+    setVideoOk(t => (t = false));
+  };
+  const changePausedState = () => {
+    setPaused(t => !t);
+    console.log('p');
+  };
+  const formatMediaTime = time => {
     let minute = Math.floor(time / 60);
     let second = parseInt(time - minute * 60);
-    minute = minute >= 10 ? minute : "0" + minute;
-    second = second >= 10 ? second : "0" + second;
-    return minute + ":" + second;
-   
-}
-const customerSliderValue=(value)=>{
-  console.log("customerSliderValue")
-  player.current.seek(value)
-
-  
-}
-const nextVideo=()=>{
-  console.log("next")
-}
-const goodEvent=()=>{
-  console.log("good")
-}
-const shareEvent=()=>{
-  console.log("share")
-}
+    minute = minute >= 10 ? minute : '0' + minute;
+    second = second >= 10 ? second : '0' + second;
+    return minute + ':' + second;
+  };
+  const customerSliderValue = value => {
+    console.log('customerSliderValue');
+    player.current.seek(value);
+  };
+  const nextVideo = () => {
+    console.log('next');
+  };
+  const goodEvent = () => {
+    console.log('good');
+  };
+  const shareEvent = () => {
+    console.log('share');
+  };
+  const renderData = ({item}) => {
+    return (
+      <TouchableOpacity
+        style={styles.itemView}
+        onPress={async () => {
+          console.log('item:', item);
+        }}>
+        <Image
+          source={require('../res/left_bkg.png')}
+          style={styles.headerView}
+        />
+        <View style={styles.itemTextView}> 
+          <Text style={styles.title}>{item.title?(item.title.length>5?item.title.substr(0,5)+"...":item.title):""}</Text>
+          <Text style={styles.number}>12个视频</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.bigView}>
       <View style={styles.asideView}>
-        {/* <Image source={require('../res/logo.png')} style={styles.logoView} /> */}
-        <Image source={require('../res/left_bkg.png')} style={styles.logoView2} />
-
+        <Image
+          source={require('../res/left_bkg.png')}
+          style={styles.logoView}
+        />
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            style={styles.flatListView1}
+            data={datalist}
+            renderItem={renderData}
+            keyExtractor={item => item.id}
+          />
+        </SafeAreaView>
+        <Image
+          source={require('../res/left_bkg.png')}
+          style={styles.logoView2}
+        />
       </View>
       <View style={styles.maiView}>
         <View style={styles.headView}></View>
@@ -117,23 +201,22 @@ const shareEvent=()=>{
           {!videoLoaded && (
             <ActivityIndicator style={styles.loading} color="#ff4ebb" />
           )}
-
         </View>
         <View style={styles.controlView}>
-            <View style={styles.sliderBox}>
-              <Text style={styles.timeView}>{formatMediaTime(currentTime)}</Text>
-              <Slider
-                style={styles.sliderView}
-                value={sliderValue}
-                maximumValue={videoTotal}
-                thumbTintColor="#ffffff" //开关夹点的颜色
-                minimumTrackTintColor="#ff4ebb"
-                maximumTrackTintColor="#e9e9e9"
-                step={0.01}
-                onValueChange={customerSliderValue}
-              />
-              <Text style={styles.timeView}>{formatMediaTime(videoTotal)}</Text>
-            </View>
+          <View style={styles.sliderBox}>
+            <Text style={styles.timeView}>{formatMediaTime(currentTime)}</Text>
+            <Slider
+              style={styles.sliderView}
+              value={sliderValue}
+              maximumValue={videoTotal}
+              thumbTintColor="#ffffff" //开关夹点的颜色
+              minimumTrackTintColor="#ff4ebb"
+              maximumTrackTintColor="#e9e9e9"
+              step={0.01}
+              onValueChange={customerSliderValue}
+            />
+            <Text style={styles.timeView}>{formatMediaTime(videoTotal)}</Text>
+          </View>
           {paused ? (
             <TouchableOpacity
               style={styles.btnView}
@@ -172,132 +255,165 @@ const shareEvent=()=>{
     </View>
   );
 };
-const styles=StyleSheet.create({
-  bigView:{
+const styles = StyleSheet.create({
+  bigView: {
     width: width,
     height: '100%',
     backgroundColor: 'yellow',
-    flexDirection:'row',
+    flexDirection: 'row',
     padding: 10,
   },
-  asideView:{
-    width:200*bl,
-    height: "100%",
-    backgroundColor:"white",
-    position: 'relative'
+  asideView: {
+    width: 200 * bl,
+    height: '100%',
+    backgroundColor: 'white',
+    position: 'relative',
   },
- 
-  logoView:{
-    width: 132*bl,
-    height: 94*bl,
-    marginLeft:33*bl,
-    marginTop:37*bl
 
+  logoView: {
+    width: 132 * bl,
+    height: 94 * bl,
+    marginLeft: 33 * bl,
+    marginTop: 37 * bl,
   },
-  logoView2:{
-    position: 'absolute',
-    width: 200*bl,
-    height: 99*bl,
-bottom: 0,
-
+  logoView2: {
+    position: 'relative',
+    width: 200 * bl,
+    height: 99 * bl,
+    bottom: 0,
   },
-  maiView:{
-    backgroundColor:"white",
-    flex:1,   
-    flexDirection:'column',
-    position: 'relative'
-  },
-  headView:{
-    height: 152*bl,
-    backgroundColor:'orange'
-  },
-  contentView:{
-    backgroundColor:'#000',
+  container: {
+    // backgroundColor: 'blue',
+    marginTop: 45 * bl,
     flex: 1,
-    position: 'relative'
+  },
+  flatListView1: {
+    // backgroundColor:"orange",
+    // flex: 1
+  },
+  itemView: {
+    width: 200 * bl,
+    height: 75 * bl,
+    borderColor: 'yellow',
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerView: {
+    width: 50 * bl,
+    height: 50 * bl,
+    borderRadius: 10 * bl,
+    backgroundColor: 'orange',
+    marginLeft: 16 * bl,
+  },
+  itemTextView: {
+    marginLeft: 12 * bl,
+  },
+  title: {
+    color: '#333333',
+    fontSize: 20 * bl,
+   lineHeight:28*bl
+
+  },
+  number: {
+    color: '#999999',
+    fontSize: 16 * bl,
+  },
+  maiView: {
+    backgroundColor: 'white',
+    flex: 1,
+    flexDirection: 'column',
+    position: 'relative',
+  },
+  headView: {
+    height: 152 * bl,
+    backgroundColor: 'orange',
+  },
+  contentView: {
+    backgroundColor: '#000',
+    flex: 1,
+    position: 'relative',
   },
   backgroundVideo: {
-    backgroundColor:'#000',
+    backgroundColor: '#000',
     position: 'absolute',
-    width: "100%",
+    width: '100%',
     top: 0,
     left: 0,
     bottom: 0,
-   
   },
-   // 加载动画(菊花图)
-   loading: {
+  // 加载动画(菊花图)
+  loading: {
     position: 'absolute',
     left: 0,
-    top: 180*bl,
+    top: 180 * bl,
     width: '100%',
     alignSelf: 'center', // 字体居中对齐
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   // 视频出错时，文本样式
   failText: {
     position: 'absolute',
     left: 0,
-    top: 180*bl,
+    top: 180 * bl,
     width: '100%',
     textAlign: 'center',
     color: '#fff',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
-  
-  controlView:{
-  height: 90*bl,
-  position: 'relative',
-  left: 0,
-  bottom: 0,
-  width: '100%',
-  },
- 
-btnView:{
-  position: 'absolute',
-  left: 24*bl,
-  top: 50*bl
-},
-btnView2:{
-  position: 'absolute',
-  left: 74*bl,
-  top: 50*bl
-},
-btnView3:{
-  position: 'absolute',
-  justifyContent:'center',
-  alignItems:'center',
-  right: 102*bl,
-  top: 21*bl
-},
-btnView4:{
-  position: 'absolute',
-  justifyContent:'center',
-  alignItems:'center',
-  right: 32*bl,
-  top: 21*bl
-},
-playBtn:{
-  width: 24*bl,
-  height: 24*bl,
-  margin: 7*bl
-},
-timeView:{
-  fontSize:16*bl,
-  color: '#666666'
-},
-sliderBox:{
-    flexDirection:'row',
-    alignItems:'center',
-    position: 'absolute',
-    top: 5*bl,
-    left: 24*bl,
-    right: 152*bl
-},
-sliderView:{
-  flex: 1,
-height: 40*bl
-}
 
-})
+  controlView: {
+    height: 90 * bl,
+    position: 'relative',
+    left: 0,
+    bottom: 0,
+    width: '100%',
+  },
+
+  btnView: {
+    position: 'absolute',
+    left: 24 * bl,
+    top: 50 * bl,
+  },
+  btnView2: {
+    position: 'absolute',
+    left: 74 * bl,
+    top: 50 * bl,
+  },
+  btnView3: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 102 * bl,
+    top: 21 * bl,
+  },
+  btnView4: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 32 * bl,
+    top: 21 * bl,
+  },
+  playBtn: {
+    width: 24 * bl,
+    height: 24 * bl,
+    margin: 7 * bl,
+  },
+  timeView: {
+    fontSize: 16 * bl,
+    color: '#666666',
+  },
+  sliderBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 5 * bl,
+    left: 24 * bl,
+    right: 152 * bl,
+  },
+  sliderView: {
+    flex: 1,
+    height: 40 * bl,
+  },
+});
 export default RootView;
