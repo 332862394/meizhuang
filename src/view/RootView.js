@@ -186,12 +186,21 @@ const RootView = () => {
   const shareEvent = () => {
     console.log('share');
   };
+  const leftClick=(item)=>{
+    console.log('item2:', item);
+
+  }
+  const topClick=(item)=>{
+    console.log('item3:', item);
+
+  }
   const renderData = ({item}) => {
     return (
       <TouchableOpacity
         style={styles.itemView}
-        onPress={async () => {
-          console.log('item:', item);
+        onPress={ () => {
+          console.log('item1:', item);
+          leftClick(item)
         }}>
         <Image
           source={require('../res/left_bkg.png')}
@@ -215,7 +224,8 @@ const RootView = () => {
       <TouchableOpacity
         style={styles.itemView2}
         onPress={async () => {
-          console.log('item:', item);
+          console.log('item0:', item);
+          topClick(item)
         }}>
         <Image source={require('../res/left_bkg.png')} style={styles.backImg} />
         {item.state === 0 ? (
@@ -427,6 +437,7 @@ const styles = StyleSheet.create({
     borderRadius: 5 * bl,
     position: 'relative',
   },
+  
   backImg: {
     position: 'absolute',
     left: 0,
