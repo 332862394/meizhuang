@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   SafeAreaView,
-  FlatList
+  FlatList,
 } from 'react-native';
 import Video from 'react-native-video';
 import Slider from '@react-native-community/slider';
@@ -22,50 +22,97 @@ const bl = width / 1194;
 const url = 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4';
 
 const RootView = () => {
-
   React.useEffect(() => {
     // getData();
-   
   }, []);
 
-
   const player = useRef(null);
-  const [datalist, setDatalist] = useState([{
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
-    title: '最多五个字哈哈',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
-    title: 'Second Item2',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
-    title: 'Second Item3',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f634',
-    title: 'Second Item4',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f635',
-    title: 'Second Item5',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f636',
-    title: 'Second Item6',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f637',
-    title: 'Second Item7',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f638',
-    title: 'Second Item8',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d729',
-    title: 'Third Item9',
-  },]);
+  const [datalist, setDatalist] = useState([
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
+      title: '最多五个字哈哈',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
+      title: 'Second Item2',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
+      title: 'Second Item3',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f634',
+      title: 'Second Item4',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f635',
+      title: 'Second Item5',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f636',
+      title: 'Second Item6',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f637',
+      title: 'Second Item7',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f638',
+      title: 'Second Item8',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d729',
+      title: 'Third Item9',
+    },
+  ]);
+
+  const [datalist2, setDatalist2] = useState([
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
+      title: '最多五个字哈哈',
+      state: 0,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
+      title: 'Second Item2',
+      state: 0,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
+      title: 'Second Item3',
+      state: 1,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f634',
+      title: 'Second Item4',
+      state: 1,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f635',
+      title: 'Second Item5',
+      state: 0,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f636',
+      title: 'Second Item6',
+      state: 0,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f637',
+      title: 'Second Item7',
+      state: 0,
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f638',
+      title: 'Second Item8',
+      state: 0,
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d729',
+      title: 'Third Item9',
+      state: 0,
+    },
+  ]);
 
   const [videoOk, setVideoOk] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -74,12 +121,12 @@ const RootView = () => {
   const [videoTotal, setVideoTotal] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
-  const getData=async()=>{
+  const getData = async () => {
     const res = await billUnit.getBanner(2);
     if (res) {
       setDatalist(t => res);
     }
-  }
+  };
   const onLoadStart = () => {
     console.log('onLoadStart');
   };
@@ -106,7 +153,7 @@ const RootView = () => {
   const onEnd = () => {
     console.log('onEnd');
     setPlaying(t => (t = false));
-    setPaused(t =>t= true);
+    setPaused(t => (t = true));
     player.current.seek(0);
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
@@ -150,10 +197,46 @@ const RootView = () => {
           source={require('../res/left_bkg.png')}
           style={styles.headerView}
         />
-        <View style={styles.itemTextView}> 
-          <Text style={styles.title}>{item.title?(item.title.length>5?item.title.substr(0,5)+"...":item.title):""}</Text>
+        <View style={styles.itemTextView}>
+          <Text style={styles.title}>
+            {item.title
+              ? item.title.length > 5
+                ? item.title.substr(0, 5) + '...'
+                : item.title
+              : ''}
+          </Text>
           <Text style={styles.number}>12个视频</Text>
         </View>
+      </TouchableOpacity>
+    );
+  };
+  const renderData2 = ({item}) => {
+    return (
+      <TouchableOpacity
+        style={styles.itemView2}
+        onPress={async () => {
+          console.log('item:', item);
+        }}>
+        <Image source={require('../res/left_bkg.png')} style={styles.backImg} />
+        {item.state === 0 ? (
+          <Image
+            source={require('../res/bf_bnt.png')}
+            style={styles.headerView2}
+          />
+        ) : (
+          <Image
+            source={require('../res/bz68.png')}
+            style={styles.headerView2}
+          />
+        )}
+
+        <Text style={styles.title2}>
+          {item.title
+            ? item.title.length > 10
+              ? item.title.substr(0, 5) + '...'
+              : item.title
+            : ''}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -166,8 +249,8 @@ const RootView = () => {
         />
         <SafeAreaView style={styles.container}>
           <FlatList
-            style={styles.flatListView1}
             data={datalist}
+            showsVerticalScrollIndicator={false} 
             renderItem={renderData}
             keyExtractor={item => item.id}
           />
@@ -178,7 +261,17 @@ const RootView = () => {
         />
       </View>
       <View style={styles.maiView}>
-        <View style={styles.headView}></View>
+        <View style={styles.headView}>
+          <SafeAreaView style={styles.container2}>
+            <FlatList
+              data={datalist2}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false} 
+              renderItem={renderData2}
+              keyExtractor={item => item.id}
+            />
+          </SafeAreaView>
+        </View>
         <View style={styles.contentView}>
           <Video
             source={{uri: url}} // Can be a URL or a local file.
@@ -259,14 +352,14 @@ const styles = StyleSheet.create({
   bigView: {
     width: width,
     height: '100%',
-    backgroundColor: 'yellow',
+    // backgroundColor: 'yellow',
     flexDirection: 'row',
-    padding: 10,
+    // padding: 10,
   },
   asideView: {
     width: 200 * bl,
     height: '100%',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     position: 'relative',
   },
 
@@ -283,19 +376,13 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   container: {
-    // backgroundColor: 'blue',
     marginTop: 45 * bl,
     flex: 1,
   },
-  flatListView1: {
-    // backgroundColor:"orange",
-    // flex: 1
-  },
+ 
   itemView: {
     width: 200 * bl,
     height: 75 * bl,
-    borderColor: 'yellow',
-    borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -303,8 +390,9 @@ const styles = StyleSheet.create({
     width: 50 * bl,
     height: 50 * bl,
     borderRadius: 10 * bl,
-    backgroundColor: 'orange',
     marginLeft: 16 * bl,
+    backgroundColor:'yellow'
+
   },
   itemTextView: {
     marginLeft: 12 * bl,
@@ -312,22 +400,53 @@ const styles = StyleSheet.create({
   title: {
     color: '#333333',
     fontSize: 20 * bl,
-   lineHeight:28*bl
-
+    lineHeight: 28 * bl,
   },
   number: {
     color: '#999999',
     fontSize: 16 * bl,
   },
   maiView: {
-    backgroundColor: 'white',
     flex: 1,
     flexDirection: 'column',
     position: 'relative',
   },
   headView: {
     height: 152 * bl,
-    backgroundColor: 'orange',
+  },
+  container2: {
+    flex: 1,
+    paddingLeft: 16 * bl,
+  },
+
+  itemView2: {
+    marginTop: 16 * bl,
+    width: 180 * bl,
+    height: 120 * bl,
+    marginRight: 16 * bl,
+    borderRadius: 5 * bl,
+    position: 'relative',
+  },
+  backImg: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+  },
+  headerView2: {
+    width: 24 * bl,
+    height: 24 * bl,
+    marginTop: 8 * bl,
+    marginLeft: 8 * bl,
+  },
+
+  title2: {
+    color: '#ffffff',
+    fontSize: 16 * bl,
+    position: 'absolute',
+    left: 8 * bl,
+    bottom: 8 * bl,
   },
   contentView: {
     backgroundColor: '#000',
@@ -341,6 +460,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
+   
   },
   // 加载动画(菊花图)
   loading: {
