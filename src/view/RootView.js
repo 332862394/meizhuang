@@ -19,7 +19,8 @@ const {width, height} = Dimensions.get('window');
 console.log('width:', width), console.log('height:', height);
 
 const bl = width / 1194;
-const url = 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4';
+// const url = 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4';
+const url = 'https://vjs.zencdn.net/v/oceans.mp4';
 
 const RootView = () => {
   React.useEffect(() => {
@@ -31,10 +32,14 @@ const RootView = () => {
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
       title: '最多五个字哈哈',
+      url:'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+      poster:'../res/bunnyPoster.png'
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
       title: 'Second Item2',
+      url:'https://vjs.zencdn.net/v/oceans.mp4',
+      poster:'../res/oceanPoster.png'
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
@@ -134,6 +139,7 @@ const RootView = () => {
     console.log('onLoad');
   };
   const onProgress = data => {
+    console.log("data:",data)
     if (!videoLoaded) {
       setVideoLoaded(t => true);
     }
@@ -182,9 +188,6 @@ const RootView = () => {
   };
   const goodEvent = () => {
     console.log('good');
-  };
-  const shareEvent = () => {
-    console.log('share');
   };
   const leftClick=(item)=>{
     console.log('item2:', item);
@@ -283,6 +286,8 @@ const RootView = () => {
         <View style={styles.contentView}>
           <Video
             source={{uri: url}} // Can be a URL or a local file.
+            // source={require('../res/oceans.mp4')} // Can be a URL or a local file.
+
             ref={player}
             paused={paused}
             resizeMode="cover"
@@ -344,13 +349,6 @@ const RootView = () => {
             <Image source={require('../res/good.png')} style={styles.playBtn} />
             <Text>点赞</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnView4} onPress={shareEvent}>
-            <Image
-              source={require('../res/share.png')}
-              style={styles.playBtn}
-            />
-            <Text>分享</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -360,9 +358,9 @@ const styles = StyleSheet.create({
   bigView: {
     width: width,
     height: '100%',
-    // backgroundColor: 'yellow',
+    backgroundColor: 'white',
     flexDirection: 'row',
-    // padding: 10,
+    padding: 8*bl,
   },
   asideView: {
     width: 200 * bl,
@@ -513,16 +511,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    right: 102 * bl,
-    top: 21 * bl,
-  },
-  btnView4: {
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
     right: 32 * bl,
     top: 21 * bl,
   },
+
   playBtn: {
     width: 24 * bl,
     height: 24 * bl,
