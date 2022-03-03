@@ -24,7 +24,7 @@ const url = 'https://vjs.zencdn.net/v/oceans.mp4';
 
 const RootView = () => {
   React.useEffect(() => {
-    // getData();
+    getData();
   }, []);
 
   const player = useRef(null);
@@ -33,13 +33,13 @@ const RootView = () => {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
       title: '最多五个字哈哈',
       url:'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
-      poster:'../res/bunnyPoster.png'
+      poster:'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg'
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
       title: 'Second Item2',
       url:'https://vjs.zencdn.net/v/oceans.mp4',
-      poster:'../res/oceanPoster.png'
+      poster:'https://c-ssl.duitang.com/uploads/blog/202107/19/20210719202109_88d76.jpg'
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
@@ -119,24 +119,30 @@ const RootView = () => {
     },
   ]);
 
+  const [playItem, setPlayItem] = useState({});
   const [videoOk, setVideoOk] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const [videoTotal, setVideoTotal] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const getData = async () => {
-    const res = await billUnit.getBanner(2);
-    if (res) {
-      setDatalist(t => res);
-    }
+    // const res = await billUnit.getBanner(2);
+    // if (res) {
+    //   setDatalist(t => res);
+    // }
+    setPlayItem(t=>t=datalist[0])
   };
   const onLoadStart = () => {
     console.log('onLoadStart');
+    setVideoLoaded(t => false);
+
   };
   const onLoad = () => {
     console.log('onLoad');
+    setVideoLoaded(t => false);
+
   };
   const onProgress = data => {
     console.log("data:",data)
@@ -191,6 +197,7 @@ const RootView = () => {
   };
   const leftClick=(item)=>{
     console.log('item2:', item);
+    setPlayItem(t=>t=item)
 
   }
   const topClick=(item)=>{
@@ -284,27 +291,32 @@ const RootView = () => {
           </SafeAreaView>
         </View>
         <View style={styles.contentView}>
-          <Video
-            source={{uri: url}} // Can be a URL or a local file.
-            // source={require('../res/oceans.mp4')} // Can be a URL or a local file.
-
-            ref={player}
-            paused={paused}
-            resizeMode="cover"
-            // 当视频开始加载时
-            onLoadStart={onLoadStart}
-            // 当视频在不断的加载时
-            onLoad={onLoad}
-            // 当视频播放时，每250ms调用一次，便于知悉当前播放位置(时间)
-            onProgress={onProgress}
-            // 当视频播放结束时调用
-            onEnd={onEnd}
-            // 当视频出错时调用
-            onError={onError}
-            style={styles.backgroundVideo}
-          />
+          {(!videoLoaded&&paused)? <Image
+          source={{uri:playItem.poster}}
+          style={styles.backgroundVideo}
+        />: <Video
+        source={{uri: playItem.url}} // Can be a URL or a local file.
+        // source={require('../res/oceans.mp4')} // Can be a URL or a local file.
+        ref={player}
+        poster={playItem.poster}
+        posterResizeMode='cover'
+        paused={paused}
+        resizeMode="cover"
+        // 当视频开始加载时
+        onLoadStart={onLoadStart}
+        // 当视频在不断的加载时
+        onLoad={onLoad}
+        // 当视频播放时，每250ms调用一次，便于知悉当前播放位置(时间)
+        onProgress={onProgress}
+        // 当视频播放结束时调用
+        onEnd={onEnd}
+        // 当视频出错时调用
+        onError={onError}
+        style={styles.backgroundVideo}
+      />}
+         
           {!videoOk && <Text style={styles.failText}>视频出错了！很抱歉</Text>}
-          {!videoLoaded && (
+          {(!videoLoaded&&!paused) && (
             <ActivityIndicator style={styles.loading} color="#ff4ebb" />
           )}
         </View>
