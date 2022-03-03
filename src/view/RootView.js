@@ -198,6 +198,8 @@ const RootView = () => {
   const leftClick=(item)=>{
     console.log('item2:', item);
     setPlayItem(t=>t=item)
+    setCurrentTime(t => (t = 0));
+    setSliderValue(t => (t = 0));
 
   }
   const topClick=(item)=>{
