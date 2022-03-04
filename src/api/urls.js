@@ -1,7 +1,10 @@
 const Urls = {
-    getTypesList: 'business/property/getPropList?',
-    getPlayersList: 'system/user/getAutherList?',
-    getVideoContent: 'business/contentmgr/getContent?',
+  getPropList: 'business/property/getPropList?',
+  getAutherList: 'system/user/getAutherList?',
+  getContent: 'business/contentmgr/getContent?',
+  getContentByAuther:'business/contentmgr/getContentByAuther?',
+  getAutherListByProp:'business/contentmgr/getAutherListByProp?'
+
   };
   export default Urls;
   

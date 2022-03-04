@@ -1,18 +1,28 @@
 import {require} from './requireUnit';
 import Urls from './urls';
-const getTypesList = async params => {
-    return await require.get(Urls.getTypesList, params, true);
+const getPropList = async params => {
+    return await require.get(Urls.getPropList, params, true);
   };
-  const getPlayersList = async params => {
+  const getAutherList = async params => {
     console.log("params:",params)
-    return await require.get(Urls.getTypesList, params, true);
+    return await require.get(Urls.getAutherList, params, true);
   };
-  const getVideoContent = async params => {
+  const getContent = async params => {
     console.log("params:",params)
-    return await require.get(Urls.getVideoContent, params, true);
+    return await require.get(Urls.getContent, params, true);
+  };
+  const getContentByAuther = async params => {
+    console.log("params:",params)
+    return await require.get(Urls.getContentByAuther, params, true);
+  };
+  const getAutherListByProp = async params => {
+    console.log("params:",params)
+    return await require.get(Urls.getAutherListByProp, params, true);
   };
 export default {
-    getTypesList,
-    getPlayersList,
-    getVideoContent
+  getPropList,
+  getAutherList,
+  getContent,
+  getContentByAuther,
+  getAutherListByProp
 };

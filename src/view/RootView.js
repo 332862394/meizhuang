@@ -128,12 +128,17 @@ const RootView = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const getData = async () => {
-    // const res1 = await billUnit.getTypesList('level=1');
+    // const res1 = await billUnit.getPropList('level=1');
     // console.log("res1:",res1)
-    // const res2 = await billUnit.getPlayersList('areaId=110');
+    // setDatalist2(t=>t=res1)
+    // const res2 = await billUnit.getAutherList('areaId=110');
     // console.log("res2:",res2)
-    // const res3 = await billUnit.getVideoContent('propId=4&userId=1');
+    // const res3 = await billUnit.getContent('propId=4&userId=1');
     // console.log("res3:",res3)
+    // const res4 = await billUnit.getContentByAuther('userId=1');
+    // console.log("res4:",res4)
+    // const res5 = await billUnit.getAutherListByProp('propId=4');
+    // console.log("res5:",res5)
     // if (res) {
     //   setDatalist(t => res);
     // }
@@ -256,10 +261,10 @@ const RootView = () => {
         )}
 
         <Text style={styles.title2}>
-          {item.title
-            ? item.title.length > 10
-              ? item.title.substr(0, 5) + '...'
-              : item.title
+          {item.propName
+            ? item.propName.length > 10
+              ? item.propName.substr(0, 5) + '...'
+              : item.propName
             : ''}
         </Text>
       </TouchableOpacity>
