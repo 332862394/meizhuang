@@ -24,7 +24,6 @@ const get = async (urlName, params, isLoading) => {
     console.log('responseJson.code:', responseJson.code);
 
     if (responseJson.code ===200) {
-      console.log("true")
       return responseJson.rows;
     }  else {
       Toast.show('请求错误：' + responseJson.msg);
