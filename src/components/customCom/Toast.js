@@ -6,7 +6,7 @@ const Toast = {
       type: 'info',
       text1: msg1,
       text2: msg2,
-      visibilityTime: 1500,
+      visibilityTime: 2000,
     });
   },
 };

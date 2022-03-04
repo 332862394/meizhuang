@@ -128,7 +128,12 @@ const RootView = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const getData = async () => {
-    // const res = await billUnit.getBanner(2);
+    // const res1 = await billUnit.getTypesList('level=1');
+    // console.log("res1:",res1)
+    // const res2 = await billUnit.getPlayersList('areaId=110');
+    // console.log("res2:",res2)
+    // const res3 = await billUnit.getVideoContent('propId=4&userId=1');
+    // console.log("res3:",res3)
     // if (res) {
     //   setDatalist(t => res);
     // }
