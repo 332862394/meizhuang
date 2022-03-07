@@ -32,14 +32,39 @@ const RootView = () => {
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
       title: '最多五个字哈哈',
-      url:'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
-      poster:'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg'
+      array: [
+        {
+          id: 'video001',
+          des:" 视频1",
+          url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+          poster:
+            'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
+        },
+        {
+          id: 'video002',
+          des:" 视频2",
+          url: 'https://vjs.zencdn.net/v/oceans.mp4',
+          poster:
+            'https://c-ssl.duitang.com/uploads/blog/202107/19/20210719202109_88d76.jpg',
+        },
+        {
+          id: 'video003',
+          des:" 视频3",
+          url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+          poster:
+            'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
+        },
+      ],
+      url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+      poster:
+        'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
       title: 'Second Item2',
-      url:'https://vjs.zencdn.net/v/oceans.mp4',
-      poster:'https://c-ssl.duitang.com/uploads/blog/202107/19/20210719202109_88d76.jpg'
+      url: 'https://vjs.zencdn.net/v/oceans.mp4',
+      poster:
+        'https://c-ssl.duitang.com/uploads/blog/202107/19/20210719202109_88d76.jpg',
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
@@ -176,7 +201,10 @@ const RootView = () => {
     console.log('onEnd');
     setPlaying(t => (t = false));
     setPaused(t => (t = true));
-    player.current.seek(0);
+    if( player.current){
+      player.current.seek(value);
+
+    }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
   };
@@ -197,7 +225,10 @@ const RootView = () => {
   };
   const customerSliderValue = value => {
     console.log('customerSliderValue');
-    player.current.seek(value);
+    if( player.current){
+      player.current.seek(value);
+
+    }
   };
   const nextVideo = () => {
     console.log('next');
@@ -208,13 +239,34 @@ const RootView = () => {
   const leftClick=(item)=>{
     console.log('item2:', item);
     setPlayItem(t=>t=item)
+    setPlaying(t => (t = false));
+    setPaused(t => (t = true));
+    if( player.current){
+      player.current.seek(0);
+
+    }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
 
   }
   const topClick=(item)=>{
-    console.log('item3:', item);
+    console.log('topClickitem:', item);
 
+  }
+  const videoClick=(item)=>{
+    console.log('videoClickitem:', item);
+    setPlayItem(t=>t=item)
+    setPlaying(t => (t = false));
+    setPaused(t => (t = true));
+    if( player.current){
+      player.current.seek(0);
+
+    }
+    setCurrentTime(t => (t = 0));
+    setSliderValue(t => (t = 0));
+
+
+   
   }
   const renderData = ({item}) => {
     return (
@@ -265,6 +317,30 @@ const RootView = () => {
             ? item.propName.length > 10
               ? item.propName.substr(0, 5) + '...'
               : item.propName
+            : ''}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+  const renderData3 = ({item}) => {
+    console.log("item:",item)
+    return (
+      <TouchableOpacity
+        style={styles.itemView3}
+        onPress={async () => {
+          videoClick(item)
+        }}>
+         <Image
+          source={{uri:item.poster}}
+          style={styles.backImg}
+        /> 
+       
+
+        <Text style={styles.title3}>
+          {item.des
+            ? item.des.length > 10
+              ? item.des.substr(0, 5) + '...'
+              : item.des
             : ''}
         </Text>
       </TouchableOpacity>
@@ -374,6 +450,17 @@ const RootView = () => {
             <Text>点赞</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.footerView}>
+          <SafeAreaView style={styles.container2}>
+            <FlatList
+              data={datalist[0].array}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false} 
+              renderItem={renderData3}
+              keyExtractor={item => item.id}
+            />
+          </SafeAreaView>
+        </View>
       </View>
     </View>
   );
@@ -444,6 +531,9 @@ const styles = StyleSheet.create({
   headView: {
     height: 152 * bl,
   },
+  footerView:{
+height: 80*bl
+  },
   container2: {
     flex: 1,
     paddingLeft: 16 * bl,
@@ -457,7 +547,13 @@ const styles = StyleSheet.create({
     borderRadius: 5 * bl,
     position: 'relative',
   },
-  
+  itemView3: {
+    width: 180 * bl,
+    height: 120 * bl,
+    marginRight: 16 * bl,
+    borderRadius: 5 * bl,
+    position: 'relative',
+  },
   backImg: {
     position: 'absolute',
     left: 0,
@@ -477,7 +573,18 @@ const styles = StyleSheet.create({
     fontSize: 16 * bl,
     position: 'absolute',
     left: 8 * bl,
-    bottom: 8 * bl,
+    bottom: 7*bl,
+    
+    zIndex:1
+  },
+  title3: {
+    color: '#ff265a',
+    fontSize: 16 * bl,
+    position: 'absolute',
+    left: 8 * bl,
+    top: 50*bl,
+    
+    
   },
   contentView: {
     backgroundColor: '#000',
