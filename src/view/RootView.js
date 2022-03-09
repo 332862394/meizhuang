@@ -38,6 +38,9 @@ const RootView = () => {
   const [datalist3, setDatalist3] = useState([
    
   ]);
+  const [propIdSelected, setPropIdSelected] = useState('');
+  const [userIdSelected, setUserIdSelected] = useState('');
+  const [videoIdSelected, setVideoSelected] = useState('');
 
   const [playItem, setPlayItem] = useState({});
   const [videoOk, setVideoOk] = useState(true);
@@ -51,7 +54,7 @@ const RootView = () => {
     const res1 = await billUnit.getPropList('level=1');
     const param=res1[0].propId
         setDatalist2(t => (t = res1));
-
+       setPropIdSelected(t=>param)
     console.log('res1:', res1);
     console.log('param:', param);
 
@@ -61,11 +64,14 @@ const RootView = () => {
     const res5 = await billUnit.getAutherListByProp('propId='+param);
     console.log('res51:', res5);
     if (res5.authers.length>0) {
+      setUserIdSelected(t=>res5.authers[0].userId)
       setDatalist(t => res5.authers);
+
        const res4 = await billUnit.getContentByAuther('userId='+res5.authers[0].userId);
        if(res4.length>0){
         setDatalist3(t=>res4)
         setPlayItem(t => (t = res4[0]));
+        setVideoSelected(t=>res4[0].contentId)
        }
        
     console.log("res4:",res4)
@@ -144,25 +150,35 @@ const RootView = () => {
     }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
+    setUserIdSelected(t=>item.userId)
+
     const res4 = await billUnit.getContentByAuther('userId='+item.userId);
        if(res4.length>0){
         setDatalist3(t=>res4)
         setPlayItem(t => (t = res4[0]));
+        setVideoSelected(t=>res4[0].contentId)
+
        }
   };
   const topClick =async item => {
     console.log('topClickitem:', item);
      const param=item.propId
+     setPropIdSelected(t=>param)
+
      console.log('param:', param);
 
     const res5 = await billUnit.getAutherListByProp('propId='+param);
     console.log('res5:', res5);
     if (res5.authers.length>0) {
       setDatalist(t => res5.authers);
+      setUserIdSelected(t=>res5.authers[0].userId)
+
        const res4 = await billUnit.getContentByAuther('userId='+res5.authers[0].userId);
        if(res4.length>0){
         setDatalist3(t=>res4)
         setPlayItem(t => (t = res4[0]));
+        setVideoSelected(t=>res4[0].contentId)
+
        }
        
     console.log("res4:",res4)
@@ -174,6 +190,8 @@ const RootView = () => {
   };
   const videoClick = item => {
     console.log('videoClickitem:', item);
+    setVideoSelected(t=>item.contentId)
+
     setPlayItem(t => (t = item));
     setPlaying(t => (t = false));
     setPaused(t => (t = true));
@@ -184,10 +202,11 @@ const RootView = () => {
     setSliderValue(t => (t = 0));
   };
   const renderData = ({item}) => {
+    console.log("item22:",item)
     return (
       <TouchableOpacity
-        style={styles.itemView}
-        onPress={() => {
+      style={[styles.itemView,item.userId===userIdSelected?styles.selectedUserItem:'']}
+      onPress={() => {
           leftClick(item);
         }}>
         {item.avatar ? (
@@ -208,24 +227,20 @@ const RootView = () => {
     );
   };
   const renderData2 = ({item}) => {
+    
     return (
       <TouchableOpacity
-        style={styles.itemView2}
+        style={[styles.itemView2,item.propId===propIdSelected?styles.selectedTypeItemView:'']}
         onPress={async () => {
           topClick(item);
         }}>
         <Image source={require('../res/left_bkg.png')} style={styles.backImg} />
-        {item.state === 0 ? (
+        {item.propId===propIdSelected ? (
           <Image
             source={require('../res/bf_bnt.png')}
             style={styles.headerView2}
           />
-        ) : (
-          <Image
-            source={require('../res/bz68.png')}
-            style={styles.headerView2}
-          />
-        )}
+        ) :null}
 
         <Text style={styles.title2}>
           {item.propName
@@ -240,8 +255,8 @@ const RootView = () => {
   const renderData3 = ({item}) => {
     return (
       <TouchableOpacity
-        style={styles.itemView3}
-        onPress={async () => {
+      style={[styles.itemView3,item.contentId===videoIdSelected?styles.selectedVideoItemView:'']}
+      onPress={async () => {
           videoClick(item);
         }}>
         <Image source={{uri: item.coverImgPath}} style={styles.backImg} />
@@ -434,6 +449,9 @@ const styles = StyleSheet.create({
     height: 75 * bl,
     flexDirection: 'row',
     alignItems: 'center',
+   
+  },
+  selectedUserItem:{
     borderColor: '#ff265a',
     borderWidth: 1 * bl,
   },
@@ -479,6 +497,9 @@ const styles = StyleSheet.create({
     marginRight: 16 * bl,
     borderRadius: 5 * bl,
     position: 'relative',
+   
+  },
+  selectedTypeItemView:{
     borderColor: '#ff265a',
     borderWidth: 1 * bl,
   },
@@ -488,6 +509,10 @@ const styles = StyleSheet.create({
     marginRight: 16 * bl,
     borderRadius: 5 * bl,
     position: 'relative',
+  },
+  selectedVideoItemView:{
+    borderColor: '#ff265a',
+    borderWidth: 1 * bl,
   },
   backImg: {
     position: 'absolute',
