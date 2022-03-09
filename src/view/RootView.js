@@ -35,21 +35,21 @@ const RootView = () => {
       array: [
         {
           id: 'video001',
-          des:" 视频1",
+          des: ' 视频1',
           url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
           poster:
             'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
         },
         {
           id: 'video002',
-          des:" 视频2",
+          des: ' 视频2',
           url: 'https://vjs.zencdn.net/v/oceans.mp4',
           poster:
             'https://c-ssl.duitang.com/uploads/blog/202107/19/20210719202109_88d76.jpg',
         },
         {
           id: 'video003',
-          des:" 视频3",
+          des: ' 视频3',
           url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
           poster:
             'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
@@ -153,34 +153,32 @@ const RootView = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const getData = async () => {
-    // const res1 = await billUnit.getPropList('level=1');
-    // console.log("res1:",res1)
-    // setDatalist2(t=>t=res1)
+    const res1 = await billUnit.getPropList('level=1');
+    console.log('res1:', res1);
+    setDatalist2(t => (t = res1));
     // const res2 = await billUnit.getAutherList('areaId=110');
     // console.log("res2:",res2)
     // const res3 = await billUnit.getContent('propId=4&userId=1');
     // console.log("res3:",res3)
     // const res4 = await billUnit.getContentByAuther('userId=1');
     // console.log("res4:",res4)
-    // const res5 = await billUnit.getAutherListByProp('propId=4');
-    // console.log("res5:",res5)
-    // if (res) {
-    //   setDatalist(t => res);
-    // }
-    setPlayItem(t=>t=datalist[0])
+    const res5 = await billUnit.getAutherListByProp('propId=1');
+    console.log('res5:', res5.authers);
+    if (res5) {
+      setDatalist(t => res5.authers);
+    }
+    setPlayItem(t => (t = datalist[0]));
   };
   const onLoadStart = () => {
     console.log('onLoadStart');
     setVideoLoaded(t => false);
-
   };
   const onLoad = () => {
     console.log('onLoad');
     setVideoLoaded(t => false);
-
   };
   const onProgress = data => {
-    console.log("data:",data)
+    console.log('data:', data);
     if (!videoLoaded) {
       setVideoLoaded(t => true);
     }
@@ -201,9 +199,8 @@ const RootView = () => {
     console.log('onEnd');
     setPlaying(t => (t = false));
     setPaused(t => (t = true));
-    if( player.current){
+    if (player.current) {
       player.current.seek(value);
-
     }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
@@ -225,9 +222,8 @@ const RootView = () => {
   };
   const customerSliderValue = value => {
     console.log('customerSliderValue');
-    if( player.current){
+    if (player.current) {
       player.current.seek(value);
-
     }
   };
   const nextVideo = () => {
@@ -236,49 +232,43 @@ const RootView = () => {
   const goodEvent = () => {
     console.log('good');
   };
-  const leftClick=(item)=>{
+  const leftClick = item => {
     console.log('item2:', item);
-    setPlayItem(t=>t=item)
+    setPlayItem(t => (t = item));
     setPlaying(t => (t = false));
     setPaused(t => (t = true));
-    if( player.current){
+    if (player.current) {
       player.current.seek(0);
-
     }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
-
-  }
-  const topClick=(item)=>{
+  };
+  const topClick = item => {
     console.log('topClickitem:', item);
-
-  }
-  const videoClick=(item)=>{
+  };
+  const videoClick = item => {
     console.log('videoClickitem:', item);
-    setPlayItem(t=>t=item)
+    setPlayItem(t => (t = item));
     setPlaying(t => (t = false));
     setPaused(t => (t = true));
-    if( player.current){
+    if (player.current) {
       player.current.seek(0);
-
     }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
-
-
-   
-  }
+  };
   const renderData = ({item}) => {
+    console.log('item11:', item);
     return (
       <TouchableOpacity
         style={styles.itemView}
-        onPress={ () => {
-          leftClick(item)
+        onPress={() => {
+          leftClick(item);
         }}>
-        <Image
-          source={require('../res/left_bkg.png')}
-          style={styles.headerView}
-        />
+        {item.avatar ? (
+          <Image source={{uri: item.avatar}} style={styles.headerView} />
+        ) : null}
+
         <View style={styles.itemTextView}>
           <Text style={styles.title}>
             {item.title
@@ -297,7 +287,7 @@ const RootView = () => {
       <TouchableOpacity
         style={styles.itemView2}
         onPress={async () => {
-          topClick(item)
+          topClick(item);
         }}>
         <Image source={require('../res/left_bkg.png')} style={styles.backImg} />
         {item.state === 0 ? (
@@ -323,18 +313,14 @@ const RootView = () => {
     );
   };
   const renderData3 = ({item}) => {
-    console.log("item:",item)
+    console.log('item:', item);
     return (
       <TouchableOpacity
         style={styles.itemView3}
         onPress={async () => {
-          videoClick(item)
+          videoClick(item);
         }}>
-         <Image
-          source={{uri:item.poster}}
-          style={styles.backImg}
-        /> 
-       
+        <Image source={{uri: item.poster}} style={styles.backImg} />
 
         <Text style={styles.title3}>
           {item.des
@@ -356,9 +342,9 @@ const RootView = () => {
         <SafeAreaView style={styles.container}>
           <FlatList
             data={datalist}
-            showsVerticalScrollIndicator={false} 
+            showsVerticalScrollIndicator={false}
             renderItem={renderData}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.userId}
           />
         </SafeAreaView>
         <Image
@@ -372,39 +358,43 @@ const RootView = () => {
             <FlatList
               data={datalist2}
               horizontal={true}
-              showsHorizontalScrollIndicator={false} 
+              showsHorizontalScrollIndicator={false}
               renderItem={renderData2}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.propId}
             />
           </SafeAreaView>
         </View>
         <View style={styles.contentView}>
-          {(!videoLoaded&&paused)? <Image
-          source={{uri:playItem.poster}}
-          style={styles.backgroundVideo}
-        />: <Video
-        source={{uri: playItem.url}} // Can be a URL or a local file.
-        // source={require('../res/oceans.mp4')} // Can be a URL or a local file.
-        ref={player}
-        poster={playItem.poster}
-        posterResizeMode='cover'
-        paused={paused}
-        resizeMode="cover"
-        // 当视频开始加载时
-        onLoadStart={onLoadStart}
-        // 当视频在不断的加载时
-        onLoad={onLoad}
-        // 当视频播放时，每250ms调用一次，便于知悉当前播放位置(时间)
-        onProgress={onProgress}
-        // 当视频播放结束时调用
-        onEnd={onEnd}
-        // 当视频出错时调用
-        onError={onError}
-        style={styles.backgroundVideo}
-      />}
-         
+          {!videoLoaded && paused ? (
+            <Image
+              source={{uri: playItem.poster}}
+              style={styles.backgroundVideo}
+            />
+          ) : (
+            <Video
+              source={{uri: playItem.url}} // Can be a URL or a local file.
+              // source={require('../res/oceans.mp4')} // Can be a URL or a local file.
+              ref={player}
+              poster={playItem.poster}
+              posterResizeMode="cover"
+              paused={paused}
+              resizeMode="cover"
+              // 当视频开始加载时
+              onLoadStart={onLoadStart}
+              // 当视频在不断的加载时
+              onLoad={onLoad}
+              // 当视频播放时，每250ms调用一次，便于知悉当前播放位置(时间)
+              onProgress={onProgress}
+              // 当视频播放结束时调用
+              onEnd={onEnd}
+              // 当视频出错时调用
+              onError={onError}
+              style={styles.backgroundVideo}
+            />
+          )}
+
           {!videoOk && <Text style={styles.failText}>视频出错了！很抱歉</Text>}
-          {(!videoLoaded&&!paused) && (
+          {!videoLoaded && !paused && (
             <ActivityIndicator style={styles.loading} color="#ff4ebb" />
           )}
         </View>
@@ -455,7 +445,7 @@ const RootView = () => {
             <FlatList
               data={datalist[0].array}
               horizontal={true}
-              showsHorizontalScrollIndicator={false} 
+              showsHorizontalScrollIndicator={false}
               renderItem={renderData3}
               keyExtractor={item => item.id}
             />
@@ -471,7 +461,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'white',
     flexDirection: 'row',
-    padding: 8*bl,
+    padding: 8 * bl,
   },
   asideView: {
     width: 200 * bl,
@@ -496,20 +486,21 @@ const styles = StyleSheet.create({
     marginTop: 45 * bl,
     flex: 1,
   },
- 
+
   itemView: {
     width: 200 * bl,
     height: 75 * bl,
     flexDirection: 'row',
     alignItems: 'center',
+    borderColor: '#ff265a',
+    borderWidth: 1 * bl,
   },
   headerView: {
     width: 50 * bl,
     height: 50 * bl,
     borderRadius: 10 * bl,
     marginLeft: 16 * bl,
-    backgroundColor:'yellow'
-
+    backgroundColor: 'yellow',
   },
   itemTextView: {
     marginLeft: 12 * bl,
@@ -531,8 +522,8 @@ const styles = StyleSheet.create({
   headView: {
     height: 152 * bl,
   },
-  footerView:{
-height: 80*bl
+  footerView: {
+    height: 80 * bl,
   },
   container2: {
     flex: 1,
@@ -546,6 +537,8 @@ height: 80*bl
     marginRight: 16 * bl,
     borderRadius: 5 * bl,
     position: 'relative',
+    borderColor: '#ff265a',
+    borderWidth: 1 * bl,
   },
   itemView3: {
     width: 180 * bl,
@@ -569,22 +562,20 @@ height: 80*bl
   },
 
   title2: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 16 * bl,
     position: 'absolute',
     left: 8 * bl,
-    bottom: 7*bl,
-    
-    zIndex:1
+    bottom: 7 * bl,
+
+    zIndex: 1,
   },
   title3: {
     color: '#ff265a',
     fontSize: 16 * bl,
     position: 'absolute',
     left: 8 * bl,
-    top: 50*bl,
-    
-    
+    top: 50 * bl,
   },
   contentView: {
     backgroundColor: '#000',
@@ -598,7 +589,6 @@ height: 80*bl
     top: 0,
     left: 0,
     bottom: 0,
-   
   },
   // 加载动画(菊花图)
   loading: {

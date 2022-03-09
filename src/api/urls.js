@@ -5,6 +5,7 @@ const Urls = {
   getContentByAuther:'business/contentmgr/getContentByAuther?',
   getAutherListByProp:'business/contentmgr/getAutherListByProp?'
 
+
   };
   export default Urls;
   
