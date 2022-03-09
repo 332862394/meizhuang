@@ -29,119 +29,14 @@ const RootView = () => {
 
   const player = useRef(null);
   const [datalist, setDatalist] = useState([
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
-      title: '最多五个字哈哈',
-      array: [
-        {
-          id: 'video001',
-          des: ' 视频1',
-          url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
-          poster:
-            'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
-        },
-        {
-          id: 'video002',
-          des: ' 视频2',
-          url: 'https://vjs.zencdn.net/v/oceans.mp4',
-          poster:
-            'https://c-ssl.duitang.com/uploads/blog/202107/19/20210719202109_88d76.jpg',
-        },
-        {
-          id: 'video003',
-          des: ' 视频3',
-          url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
-          poster:
-            'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
-        },
-      ],
-      url: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
-      poster:
-        'https://c-ssl.duitang.com/uploads/blog/202108/05/20210805190242_bec37.jpg',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
-      title: 'Second Item2',
-      url: 'https://vjs.zencdn.net/v/oceans.mp4',
-      poster:
-        'https://c-ssl.duitang.com/uploads/blog/202107/19/20210719202109_88d76.jpg',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
-      title: 'Second Item3',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f634',
-      title: 'Second Item4',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f635',
-      title: 'Second Item5',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f636',
-      title: 'Second Item6',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f637',
-      title: 'Second Item7',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f638',
-      title: 'Second Item8',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d729',
-      title: 'Third Item9',
-    },
+   
   ]);
 
   const [datalist2, setDatalist2] = useState([
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
-      title: '最多五个字哈哈',
-      state: 0,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f632',
-      title: 'Second Item2',
-      state: 0,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f633',
-      title: 'Second Item3',
-      state: 1,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f634',
-      title: 'Second Item4',
-      state: 1,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f635',
-      title: 'Second Item5',
-      state: 0,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f636',
-      title: 'Second Item6',
-      state: 0,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f637',
-      title: 'Second Item7',
-      state: 0,
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f638',
-      title: 'Second Item8',
-      state: 0,
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d729',
-      title: 'Third Item9',
-      state: 0,
-    },
+  
+  ]);
+  const [datalist3, setDatalist3] = useState([
+   
   ]);
 
   const [playItem, setPlayItem] = useState({});
@@ -154,20 +49,27 @@ const RootView = () => {
   const [sliderValue, setSliderValue] = useState(0);
   const getData = async () => {
     const res1 = await billUnit.getPropList('level=1');
+    const param=res1[0].propId
+        setDatalist2(t => (t = res1));
+
     console.log('res1:', res1);
-    setDatalist2(t => (t = res1));
-    // const res2 = await billUnit.getAutherList('areaId=110');
-    // console.log("res2:",res2)
-    // const res3 = await billUnit.getContent('propId=4&userId=1');
-    // console.log("res3:",res3)
-    // const res4 = await billUnit.getContentByAuther('userId=1');
-    // console.log("res4:",res4)
-    const res5 = await billUnit.getAutherListByProp('propId=1');
-    console.log('res5:', res5.authers);
-    if (res5) {
+    console.log('param:', param);
+
+    
+   
+   
+    const res5 = await billUnit.getAutherListByProp('propId='+param);
+    console.log('res51:', res5);
+    if (res5.authers.length>0) {
       setDatalist(t => res5.authers);
+       const res4 = await billUnit.getContentByAuther('userId='+res5.authers[0].userId);
+       if(res4.length>0){
+        setDatalist3(t=>res4)
+        setPlayItem(t => (t = res4[0]));
+       }
+       
+    console.log("res4:",res4)
     }
-    setPlayItem(t => (t = datalist[0]));
   };
   const onLoadStart = () => {
     console.log('onLoadStart');
@@ -232,7 +134,7 @@ const RootView = () => {
   const goodEvent = () => {
     console.log('good');
   };
-  const leftClick = item => {
+  const leftClick = async item => {
     console.log('item2:', item);
     setPlayItem(t => (t = item));
     setPlaying(t => (t = false));
@@ -242,9 +144,33 @@ const RootView = () => {
     }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
+    const res4 = await billUnit.getContentByAuther('userId='+item.userId);
+       if(res4.length>0){
+        setDatalist3(t=>res4)
+        setPlayItem(t => (t = res4[0]));
+       }
   };
-  const topClick = item => {
+  const topClick =async item => {
     console.log('topClickitem:', item);
+     const param=item.propId
+     console.log('param:', param);
+
+    const res5 = await billUnit.getAutherListByProp('propId='+param);
+    console.log('res5:', res5);
+    if (res5.authers.length>0) {
+      setDatalist(t => res5.authers);
+       const res4 = await billUnit.getContentByAuther('userId='+res5.authers[0].userId);
+       if(res4.length>0){
+        setDatalist3(t=>res4)
+        setPlayItem(t => (t = res4[0]));
+       }
+       
+    console.log("res4:",res4)
+    }else{
+      setDatalist(t => [])
+        setDatalist3(t=>[])
+        setPlayItem(t => null);
+    }
   };
   const videoClick = item => {
     console.log('videoClickitem:', item);
@@ -258,7 +184,6 @@ const RootView = () => {
     setSliderValue(t => (t = 0));
   };
   const renderData = ({item}) => {
-    console.log('item11:', item);
     return (
       <TouchableOpacity
         style={styles.itemView}
@@ -271,10 +196,10 @@ const RootView = () => {
 
         <View style={styles.itemTextView}>
           <Text style={styles.title}>
-            {item.title
-              ? item.title.length > 5
-                ? item.title.substr(0, 5) + '...'
-                : item.title
+            {item.userName
+              ? item.userName.length > 5
+                ? item.userName.substr(0, 5) + '...'
+                : item.userName
               : ''}
           </Text>
           <Text style={styles.number}>12个视频</Text>
@@ -313,23 +238,36 @@ const RootView = () => {
     );
   };
   const renderData3 = ({item}) => {
-    console.log('item:', item);
     return (
       <TouchableOpacity
         style={styles.itemView3}
         onPress={async () => {
           videoClick(item);
         }}>
-        <Image source={{uri: item.poster}} style={styles.backImg} />
+        <Image source={{uri: item.coverImgPath}} style={styles.backImg} />
 
         <Text style={styles.title3}>
-          {item.des
-            ? item.des.length > 10
-              ? item.des.substr(0, 5) + '...'
-              : item.des
+          {item.contentName
+            ? item.contentName.length > 10
+              ? item.contentName.substr(0, 5) + '...'
+              : item.contentName
             : ''}
         </Text>
       </TouchableOpacity>
+    );
+  };
+  const emptyCom = () => {
+    return (
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 50 * bl,
+        }}>
+        <Text style={{fontSize: 15 * bl}}> 暂无数据</Text>
+      </View>
     );
   };
   return (
@@ -345,6 +283,7 @@ const RootView = () => {
             showsVerticalScrollIndicator={false}
             renderItem={renderData}
             keyExtractor={item => item.userId}
+            ListEmptyComponent={emptyCom}
           />
         </SafeAreaView>
         <Image
@@ -361,21 +300,23 @@ const RootView = () => {
               showsHorizontalScrollIndicator={false}
               renderItem={renderData2}
               keyExtractor={item => item.propId}
+              ListEmptyComponent={emptyCom}
             />
           </SafeAreaView>
         </View>
         <View style={styles.contentView}>
-          {!videoLoaded && paused ? (
+          
+          {playItem?(!videoLoaded && paused ? (
             <Image
-              source={{uri: playItem.poster}}
+              source={{uri: playItem.coverImgPath}}
               style={styles.backgroundVideo}
             />
           ) : (
             <Video
-              source={{uri: playItem.url}} // Can be a URL or a local file.
+              source={{uri: playItem.filePath}} // Can be a URL or a local file.
               // source={require('../res/oceans.mp4')} // Can be a URL or a local file.
               ref={player}
-              poster={playItem.poster}
+              poster={playItem.coverImgPath}
               posterResizeMode="cover"
               paused={paused}
               resizeMode="cover"
@@ -391,7 +332,7 @@ const RootView = () => {
               onError={onError}
               style={styles.backgroundVideo}
             />
-          )}
+          )):null}
 
           {!videoOk && <Text style={styles.failText}>视频出错了！很抱歉</Text>}
           {!videoLoaded && !paused && (
@@ -443,11 +384,12 @@ const RootView = () => {
         <View style={styles.footerView}>
           <SafeAreaView style={styles.container2}>
             <FlatList
-              data={datalist[0].array}
+              data={datalist3}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               renderItem={renderData3}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.contentId}
+              ListEmptyComponent={emptyCom}
             />
           </SafeAreaView>
         </View>

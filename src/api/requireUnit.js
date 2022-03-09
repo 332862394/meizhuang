@@ -20,8 +20,8 @@ const get = async (urlName, params, isLoading) => {
     });
     let responseJson = await response.json();
     Loading.hidden();
-    console.log('responseJson:', JSON.stringify(responseJson));
-    console.log('responseJson.code:', responseJson.code);
+    // console.log('responseJson:', JSON.stringify(responseJson));
+    // console.log('responseJson.code:', responseJson.code);
 
     if (responseJson.code ===200) {
       return responseJson.rows?responseJson.rows:responseJson.data;
