@@ -246,7 +246,6 @@ const RootView = () => {
           <Image source={{uri: item.coverImg}} style={styles.backImg} />
         ) : null}
 
-        {/* <Image source={require('../res/left_bkg.png')} style={styles.backImg} /> */}
         {item.propId===propIdSelected ? (
           <Image
             source={require('../res/bf_bnt.png')}
