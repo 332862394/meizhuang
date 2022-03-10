@@ -108,7 +108,7 @@ const RootView = () => {
     setPlaying(t => (t = false));
     setPaused(t => (t = true));
     if (player.current) {
-      player.current.seek(value);
+      player.current.seek(0);
     }
     setCurrentTime(t => (t = 0));
     setSliderValue(t => (t = 0));
@@ -205,10 +205,18 @@ const RootView = () => {
     console.log("item22:",item)
     return (
       <TouchableOpacity
-      style={[styles.itemView,item.userId===userIdSelected?styles.selectedUserItem:'']}
-      onPress={() => {
+        style={[
+          styles.itemView,
+          item.userId === userIdSelected ? styles.selectedUserItem : '',
+        ]}
+        onPress={() => {
           leftClick(item);
         }}>
+        
+        {item.userId === userIdSelected ? (
+         <Image source={require('../res/矩形.png')} style={styles.backImg} />
+        ) : null}
+
         {item.avatar ? (
           <Image source={{uri: item.avatar}} style={styles.headerView} />
         ) : null}
@@ -234,7 +242,11 @@ const RootView = () => {
         onPress={async () => {
           topClick(item);
         }}>
-        <Image source={require('../res/left_bkg.png')} style={styles.backImg} />
+           {item.coverImg ? (
+          <Image source={{uri: item.coverImg}} style={styles.backImg} />
+        ) : null}
+
+        {/* <Image source={require('../res/left_bkg.png')} style={styles.backImg} /> */}
         {item.propId===propIdSelected ? (
           <Image
             source={require('../res/bf_bnt.png')}
@@ -289,7 +301,7 @@ const RootView = () => {
     <View style={styles.bigView}>
       <View style={styles.asideView}>
         <Image
-          source={require('../res/left_bkg.png')}
+          source={require('../res/logo.png')}
           style={styles.logoView}
         />
         <SafeAreaView style={styles.container}>
